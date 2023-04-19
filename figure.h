@@ -2,9 +2,30 @@
 #include"container.h"
 #include<math.h>
 #include<gcroot.h>
-ref class FigureInterface {
+#include<windows.h>
+ref class Dec {
+public:
+	System::Drawing::Point point1 = System::Drawing::Point(0, 0);
+	System::Drawing::Point point2 = System::Drawing::Point(0, 0);
+	System::Drawing::Point point3 = System::Drawing::Point(0, 0);
+	System::Drawing::Pen^ pp = gcnew System::Drawing::Pen(System::Drawing::Brushes::Black, 1.0f);
+	System::Drawing::Pen^ checkpen = gcnew System::Drawing::Pen(System::Drawing::Brushes::Black, 1.0f);
+	System::Drawing::SolidBrush^ brush = gcnew System::Drawing::SolidBrush(System::Drawing::Color::Black);
+	cli::array<System::Drawing::Point>^ points = gcnew cli::array<System::Drawing::Point>(3);
+	cli::array<float>^ dash = gcnew cli::array<float>(2);
+	Dec() {
+		points[0] = point1;
+		points[1] = point2;
+		points[2] = point3;
+		dash[0] = 2;
+		dash[1] = 2;
+		checkpen->DashPattern = dash;
+	}
+};
+class FigureInterface {
 public:
 	std::string color="Empty";
+	msclr::gcroot<Dec^> point = gcnew Dec;
 	float pointx, pointy,h,w,rad;
 	bool checked = true;
 	void setColor(std::string color) {
@@ -20,65 +41,68 @@ public:
 	void setCheck(bool check) {
 		checked = check;
 	}
+	virtual void drawChecked(System::Windows::Forms::PaintEventArgs^ e) {
+		if (checked) {
+			e->Graphics->DrawRectangle(point->checkpen, (pointx - w / 2 - 8),(pointy - h / 2 - 8),( w+16),( h+16));
+		}
+	}
 };
-ref class Rectang : public FigureInterface {
+class Rectang : public FigureInterface {
 public:
-	float h, w;
 	Rectang(float x,float y,float h,float w) {
 		this->h = h;
 		this->w = w;
-		pointx = x-w/2;
-		pointy = y-h/2;
+		pointx = x;
+		pointy = y;;
 	}
 	void drawFigure(System::Windows::Forms::PaintEventArgs^ e) override {
 		if (color =="Red")
-			e->Graphics->FillRectangle(System::Drawing::Brushes::Red, pointx, pointy, w, h);
+			e->Graphics->FillRectangle(System::Drawing::Brushes::Red, pointx-w/2, pointy-h/2, w, h);
 		if (color == "Blue")
-			e->Graphics->FillRectangle(System::Drawing::Brushes::Blue, pointx, pointy, w, h);
+			e->Graphics->FillRectangle(System::Drawing::Brushes::Blue, pointx-w/2, pointy-h/2, w, h);
 		if (color == "Green")
-			e->Graphics->FillRectangle(System::Drawing::Brushes::Green, pointx, pointy, w, h);
-		e->Graphics->DrawRectangle(System::Drawing::Pens::Black, pointx, pointy, w, h);
+			e->Graphics->FillRectangle(System::Drawing::Brushes::Green, pointx-w/2, pointy-h/2, w, h);
+		e->Graphics->DrawRectangle(System::Drawing::Pens::Black, pointx-w/2, pointy-h/2, w, h);
 		if (checked)
-			e->Graphics->DrawRectangle(System::Drawing::Pens::Purple, pointx, pointy, w, h);
+			e->Graphics->DrawRectangle(System::Drawing::Pens::Purple, pointx-w/2, pointy-h/2, w, h);
 	}
 	bool checkPos(System::Windows::Forms::MouseEventArgs^ e) override {
-		if (e->X >= pointx && e->X <= pointx + w && e->Y >= pointy && e->Y <= pointy + h)
+		if (e->X >= pointx-w/2 && e->X <= pointx-w/2 + w && e->Y >= pointy-h/2 && e->Y <= pointy-h/2 + h)
 			return true;
 		return false;
 	}
 };
-ref class Triang : public FigureInterface {
+class Triang : public FigureInterface {
 public:
-	array <System::Drawing::Point>^ points;
 	Triang(float x, float y) {
 		pointx = x;
 		pointy = y;
-		h = 675;
+		h = 30;
 		w = 30;
-	}
-	void drawColor(System::Windows::Forms::PaintEventArgs^ e) {
-		float temph = h,tempw=w;
-		while (tempw) {
-			tempw--;
-			temph--;
-			if (color == "Red") {
-				e->Graphics->DrawLine(System::Drawing::Pens::Red, pointx, pointy - sqrt(temph), pointx - tempw, pointy + sqrt(temph));
-				e->Graphics->DrawLine(System::Drawing::Pens::Red, pointx - tempw, pointy + sqrt(temph), pointx + tempw, pointy + sqrt(temph));
-				e->Graphics->DrawLine(System::Drawing::Pens::Red, pointx, pointy - sqrt(temph), pointx + tempw, pointy + sqrt(temph));
-			}
-		}
+		point->points[0].X = pointx - w;
+		point->points[0].Y = pointy + (h);
+		point->points[1].X = pointx;
+		point->points[1].Y = pointy - (h);
+		point->points[2].X = pointx + w;
+		point->points[2].Y = pointy + (h);
 	}
 	void drawFigure(System::Windows::Forms::PaintEventArgs^ e) override {
-		drawColor(e);
-		e->Graphics->FillPolygon(System::Drawing::Pens::Cyan, );
-		e->Graphics->DrawLine(System::Drawing::Pens::Black, pointx, pointy - sqrt(h), pointx - w, pointy + sqrt(h));
-		e->Graphics->DrawLine(System::Drawing::Pens::Black, pointx - w, pointy + sqrt(h), pointx + w, pointy + sqrt(h));
-		e->Graphics->DrawLine(System::Drawing::Pens::Black, pointx, pointy - sqrt(h), pointx + w, pointy + sqrt(h));
-		if (checked) {
-			e->Graphics->DrawLine(System::Drawing::Pens::Purple, pointx, pointy - sqrt(h), pointx - w, pointy + sqrt(h));
-			e->Graphics->DrawLine(System::Drawing::Pens::Purple, pointx - w, pointy + sqrt(h), pointx + w, pointy + sqrt(h));
-			e->Graphics->DrawLine(System::Drawing::Pens::Purple, pointx, pointy - sqrt(h), pointx + w, pointy + sqrt(h));
+		if (color == "Red") {
+			point->brush->Color = System::Drawing::Color::Red;
+			e->Graphics->FillPolygon(point->brush,point->points);
 		}
+		if (color == "Green") {
+			point->brush->Color = System::Drawing::Color::Green;
+			e->Graphics->FillPolygon(point->brush, point->points);
+		}
+		if (color == "Blue") {
+			point->brush->Color = System::Drawing::Color::Blue;
+			e->Graphics->FillPolygon(point->brush, point->points);
+		}
+		point->pp->Color = System::Drawing::Color::Black;
+		if (checked)
+			point->pp->Color = System::Drawing::Color::Purple;
+		e->Graphics->DrawPolygon(point->pp, point->points);
 	}
 	float area(int x1, int y1, int x2, int y2, int x3, int y3)
 	{
@@ -102,12 +126,17 @@ public:
 		return (A == A1 + A2 + A3);
 	}
 	bool checkPos(System::Windows::Forms::MouseEventArgs^ e) override {
-		if (isInside(pointx-w,pointy+sqrt(h),pointx,pointy-sqrt(h),pointx+w,pointy+sqrt(h),e->X,e->Y))
+		if (isInside(pointx-w,pointy+(h),pointx,pointy-(h),pointx+w,pointy+(h),e->X,e->Y))
 			return true;
 		return false;
 	}
+	void drawChecked(System::Windows::Forms::PaintEventArgs^ e) override {
+		if (checked) {
+			e->Graphics->DrawRectangle(point->checkpen, (pointx - w / 2 - 20), (pointy - h / 2 - 20), (w + 40), (h + 40));
+		}
+	}
 };
-ref class Circle : public FigureInterface {
+class Circle : public FigureInterface {
 public:
 
 	Circle() {
@@ -117,6 +146,8 @@ public:
 		pointx = x;
 		pointy = y;
 		rad = radp;
+		h = 2*radp;
+		w = 2*radp;
 	}
 	void drawFigure(System::Windows::Forms::PaintEventArgs^ e) override {
 		if (color == "Red")
@@ -138,7 +169,7 @@ public:
 class MVC {
 private:
 	int b1, b2, b3;
-	Storage <FigureInterface^> figures;
+	Storage <FigureInterface*> figures;
 	std::string color;
 public:
 	void b1Set(int a) { b1 = a; }
@@ -158,7 +189,14 @@ public:
 	}
 	void drawFigures(System::Windows::Forms::PaintEventArgs^ e) { 
 		for (int i = 0; i<figures.getSize(); i++)
-			figures.getObject(i)->drawFigure(e);
+			if(!figures.getObject(i)->checked)
+				figures.getObject(i)->drawFigure(e);
+		for (int i = 0; i < figures.getSize(); i++)
+			if (figures.getObject(i)->checked) {
+				figures.getObject(i)->drawFigure(e);
+				figures.getObject(i)->drawChecked(e);
+			}
+		
 	}
 	int getSize() { return figures.getSize(); }
 	void changePosition(System::Windows::Forms::MouseEventArgs^ e) {
