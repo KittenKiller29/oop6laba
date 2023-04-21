@@ -180,6 +180,7 @@ namespace oop6laba {
 			this->button4->TabIndex = 7;
 			this->button4->Text = L"Очистить форму";
 			this->button4->UseVisualStyleBackColor = false;
+			this->button4->Click += gcnew System::EventHandler(this, &MyForm::button4_Click);
 			// 
 			// button5
 			// 
@@ -226,11 +227,11 @@ namespace oop6laba {
 			// 
 			this->label4->AutoSize = true;
 			this->label4->ForeColor = System::Drawing::Color::Green;
-			this->label4->Location = System::Drawing::Point(473, 6);
+			this->label4->Location = System::Drawing::Point(483, 6);
 			this->label4->Name = L"label4";
 			this->label4->Size = System::Drawing::Size(161, 17);
 			this->label4->TabIndex = 12;
-			this->label4->Text = L"Клаивша CTRL зажата!";
+			this->label4->Text = L"Клавиша CTRL зажата!";
 			this->label4->Visible = false;
 			// 
 			// panel1
@@ -274,12 +275,16 @@ namespace oop6laba {
 			this->ClientSize = System::Drawing::Size(696, 449);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->label3);
+			this->KeyPreview = true;
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::MyForm_Paint);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyDown);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MyForm::MyForm_KeyUp);
 			this->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseClick);
 			this->MouseDoubleClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDoubleClick);
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseDown);
+			this->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &MyForm::MyForm_MouseUp);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			this->ResumeLayout(false);
@@ -321,11 +326,17 @@ namespace oop6laba {
 		switch (e->Button) {
 		case System::Windows::Forms::MouseButtons::Left:
 			mvc.makeunCheck();
-			mvc.pushObject(mvc.getSize(), e);
+			if (!mvc.ctrlGet())
+				mvc.pushObject(mvc.getSize(), e);
+			else {
+				mvc.checker->createChecker(e);
+				mvc.inChecker();
+			}
 			break;
 		case System::Windows::Forms::MouseButtons::Right:
 			mvc.makeunCheck();
 			mvc.makeCheck(e);
+			mvc.checker->deleteChecker();
 			break;
 		}
 		Invalidate();
@@ -369,7 +380,6 @@ namespace oop6laba {
 private: System::Void panel1_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e) {
 }
 private: System::Void MyForm_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-	
 }
 private: System::Void radioButton1_Click(System::Object^ sender, System::EventArgs^ e) {
 	if (radioButton1->Checked) {
@@ -397,6 +407,65 @@ private: System::Void radioButton4_Click(System::Object^ sender, System::EventAr
 		mvc.colorSet("Empty");
 		mvc.createColor();
 	}
+	Invalidate();
+}
+
+private: System::Void MyForm_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	switch (e->KeyCode){
+	case Keys::ControlKey:
+		mvc.makeunCheck();
+		mvc.ctrlSet(!mvc.ctrlGet());
+		label4->Visible = !label4->Visible;
+		switch (mvc.ctrlGet()) {
+		case true:
+			mvc.checker->deleteChecker();
+			label1->ForeColor = Color::Green;
+			label1->Text = L"Выделение на ЛКМ включено!";
+			break;
+		case false:
+			label1->ForeColor = Color::Red;
+			label1->Text = L"Клавиша CTRL не зажата!";
+			mvc.checker->deleteChecker();
+			break;
+		}
+		break;
+	/*case Keys::S:
+		mvc.changePosition(0, 1);
+		break;
+	case Keys::W:
+		mvc.changePosition(0, -1);
+		break;
+	case Keys::A:
+		mvc.changePosition(-1, 0);
+		break;
+	case Keys::D:
+		mvc.changePosition(1, 0);
+		break;*/
+	}
+	Invalidate();
+}
+private: System::Void MyForm_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+	switch (e->KeyCode) {
+	case Keys::S:
+		mvc.changePosition(0, 1,MyForm::Size.Width, MyForm::Size.Height-panel1->Height);
+		break;
+	case Keys::W:
+		mvc.changePosition(0, -1, MyForm::Size.Width, MyForm::Size.Height - panel1->Height);
+		break;
+	case Keys::A:
+		mvc.changePosition(-1, 0, MyForm::Size.Width, MyForm::Size.Height - panel1->Height);
+		break;
+	case Keys::D:
+		mvc.changePosition(1, 0, MyForm::Size.Width, MyForm::Size.Height - panel1->Height);
+		break;
+	}
+	Invalidate();
+}
+private: System::Void MyForm_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+}
+private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e) {
+	mvc.deleteObjects();
+	mvc.checker->deleteChecker();
 	Invalidate();
 }
 };

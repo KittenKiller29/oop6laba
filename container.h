@@ -23,7 +23,7 @@ public:
 	
 	void pushObject(int ind, T value);//добавление элемента в контейнер под определенным индексом
 	void setObject(int ind, T* value);//присвоение элементу массива пользовательского значения
-	T* deleteObject(int ind);//извлечение с удалением
+	T deleteObject(int ind);//извлечение с удалением
 	T getObject(int ind);//извлечение без удаления
 	int getSize();//получение размера контейнера
 private:
@@ -49,11 +49,9 @@ void Storage<T>::pushObject(int ind,T value) {
 	size++;									  
 }											  
 template<class T>
-T* Storage<T>::deleteObject(int ind) {
+T Storage<T>::deleteObject(int ind) {
 	int tmpind = ind;
-	if (size == 1)
-		return nullptr;
-	else if (tmpind >= size)//приведение некорректного индекса к нормальному значению
+	if (tmpind >= size)//приведение некорректного индекса к нормальному значению
 		tmpind = size - 1;
 	else if (tmpind < 0)//приведение некорректного индекса к нормальному значению
 		tmpind = 0;
@@ -68,7 +66,7 @@ T* Storage<T>::deleteObject(int ind) {
 	delete[] mas;//освобождение памяти от старого массива
 	mas = newmas;//запись нового массива в mas
 	size--;
-	return &elem;//возврат удаляемого объекта
+	return elem;//возврат удаляемого объекта
 }
 template<class T>
 T Storage<T>::getObject(int ind) {
