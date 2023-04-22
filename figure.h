@@ -53,6 +53,25 @@ public:
 			return false;
 		return true;
 	}
+	virtual void changeSize(float a) {
+		if (checked) { h += a; w += a; }
+	}
+	virtual void changeSizeCorrect(float a,float bordx,float bordy) {
+		if (pointx + w / 2 + a > bordx - 16)
+			changePos(-2, 0);
+		if (pointx - w / 2 + a < 3)
+			changePos(2, 0);
+		if (pointy - h / 2 + a < 3)
+			changePos(0, 2);
+		if (pointy + h / 2 + a > bordy - 41)
+			changePos(0, -2);
+	}
+	virtual int isSize() {
+		if (h > 86)
+			return 1;
+		if (h < 30)
+			return 2;
+	}
 };
 class Rectang : public FigureInterface {
 public:
@@ -197,6 +216,34 @@ public:
 			return false;
 		return true;
 	}
+	void changeSize(float a) override {
+		if (checked) {
+			h += 2*a;
+			w += 2*a;
+			point->points[0].X -= a;
+			point->points[0].Y += a;
+			point->points[1].Y -= a;
+			point->points[2].X += a;
+			point->points[2].Y += a;
+		}
+	}
+	int isSize() override {
+		if (h > 60)
+			return 1;
+		if (h < 10)
+			return 2;
+	}
+	void changeSizeCorrect(float a, float bordx, float bordy) override {
+		if (point->points[2].X + a > bordx - 16)
+			changePos(-2, 0);
+		if (point->points[0].X + a < 3)
+			changePos(2, 0);
+		if (point->points[1].Y + a < 3)
+			changePos(0, 2);
+		if (point->points[0].Y + a > bordy - 41)
+			changePos(0, -2);
+	}
+
 };
 class Circle : public FigureInterface {
 public:
@@ -226,6 +273,13 @@ public:
 		if (System::Math::Pow(e->X - pointx, 2) + System::Math::Pow(e->Y - pointy, 2) <= System::Math::Pow(rad, 2))
 			return true;
 		return false;
+	}
+	void changeSize(float a) override {
+		if (checked) {
+			rad += a;
+			h += 2*a;
+			w += 2*a;
+		}
 	}
 };
 class MVC {
@@ -316,6 +370,20 @@ public:
 	void deleteObjects() {
 		while (figures.getSize())
 			figures.deleteObject(0);
+	}
+	void changeSizes(float a,float bordx,float bordy) {
+		for (int i = figures.getSize() - 1; i >= 0; --i)
+			if (figures.getObject(i)->checked) {
+				figures.getObject(i)->changeSizeCorrect(a, bordx, bordy);
+				if (a < 0 && figures.getObject(i)->isSize() == 2 || a > 0 && figures.getObject(i)->isSize() == 1)
+					continue;
+				figures.getObject(i)->changeSize(a);
+			}
+	}
+	void outsideBorder(float bordx, float bordy) {
+		for (int i = 0; i < figures.getSize(); i++)
+			if (!figures.getObject(i)->checkBorder(0, 0, bordx, bordy))
+				figures.deleteObject(i);
 	}
 	
 };

@@ -84,6 +84,7 @@ namespace oop6laba {
 			// 
 			// button1
 			// 
+			this->button1->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->button1->BackColor = System::Drawing::Color::White;
 			this->button1->Location = System::Drawing::Point(9, 53);
 			this->button1->Name = L"button1";
@@ -95,6 +96,7 @@ namespace oop6laba {
 			// 
 			// button2
 			// 
+			this->button2->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->button2->BackColor = System::Drawing::Color::White;
 			this->button2->Location = System::Drawing::Point(153, 53);
 			this->button2->Name = L"button2";
@@ -106,6 +108,7 @@ namespace oop6laba {
 			// 
 			// button3
 			// 
+			this->button3->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->button3->BackColor = System::Drawing::Color::White;
 			this->button3->Location = System::Drawing::Point(297, 53);
 			this->button3->Name = L"button3";
@@ -117,6 +120,7 @@ namespace oop6laba {
 			// 
 			// radioButton1
 			// 
+			this->radioButton1->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->radioButton1->AutoSize = true;
 			this->radioButton1->Location = System::Drawing::Point(9, 26);
 			this->radioButton1->Name = L"radioButton1";
@@ -131,6 +135,7 @@ namespace oop6laba {
 			// 
 			// radioButton2
 			// 
+			this->radioButton2->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->radioButton2->AutoSize = true;
 			this->radioButton2->Location = System::Drawing::Point(116, 26);
 			this->radioButton2->Name = L"radioButton2";
@@ -145,6 +150,7 @@ namespace oop6laba {
 			// 
 			// radioButton3
 			// 
+			this->radioButton3->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->radioButton3->AutoSize = true;
 			this->radioButton3->Location = System::Drawing::Point(223, 26);
 			this->radioButton3->Name = L"radioButton3";
@@ -159,6 +165,7 @@ namespace oop6laba {
 			// 
 			// radioButton4
 			// 
+			this->radioButton4->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->radioButton4->AutoSize = true;
 			this->radioButton4->Location = System::Drawing::Point(307, 26);
 			this->radioButton4->Name = L"radioButton4";
@@ -173,6 +180,7 @@ namespace oop6laba {
 			// 
 			// button4
 			// 
+			this->button4->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->button4->BackColor = System::Drawing::Color::White;
 			this->button4->Location = System::Drawing::Point(561, 53);
 			this->button4->Name = L"button4";
@@ -184,6 +192,7 @@ namespace oop6laba {
 			// 
 			// button5
 			// 
+			this->button5->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->button5->BackColor = System::Drawing::Color::White;
 			this->button5->Location = System::Drawing::Point(435, 53);
 			this->button5->Name = L"button5";
@@ -195,6 +204,7 @@ namespace oop6laba {
 			// 
 			// label1
 			// 
+			this->label1->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->label1->AutoSize = true;
 			this->label1->ForeColor = System::Drawing::Color::Red;
 			this->label1->Location = System::Drawing::Point(463, 26);
@@ -205,6 +215,7 @@ namespace oop6laba {
 			// 
 			// label2
 			// 
+			this->label2->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->label2->AutoSize = true;
 			this->label2->ForeColor = System::Drawing::Color::Green;
 			this->label2->Location = System::Drawing::Point(59, 6);
@@ -225,6 +236,7 @@ namespace oop6laba {
 			// 
 			// label4
 			// 
+			this->label4->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->label4->AutoSize = true;
 			this->label4->ForeColor = System::Drawing::Color::Green;
 			this->label4->Location = System::Drawing::Point(483, 6);
@@ -236,6 +248,8 @@ namespace oop6laba {
 			// 
 			// panel1
 			// 
+			this->panel1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>(((System::Windows::Forms::AnchorStyles::Bottom | System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
 			this->panel1->BackColor = System::Drawing::Color::NavajoWhite;
 			this->panel1->Controls->Add(this->label5);
 			this->panel1->Controls->Add(this->label4);
@@ -254,10 +268,12 @@ namespace oop6laba {
 			this->panel1->Name = L"panel1";
 			this->panel1->Size = System::Drawing::Size(696, 109);
 			this->panel1->TabIndex = 13;
+			this->panel1->SizeChanged += gcnew System::EventHandler(this, &MyForm::panel1_SizeChanged);
 			this->panel1->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::panel1_Paint);
 			// 
 			// label5
 			// 
+			this->label5->Anchor = System::Windows::Forms::AnchorStyles::Bottom;
 			this->label5->AutoSize = true;
 			this->label5->ForeColor = System::Drawing::Color::Red;
 			this->label5->Location = System::Drawing::Point(136, 26);
@@ -276,6 +292,7 @@ namespace oop6laba {
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->label3);
 			this->KeyPreview = true;
+			this->MinimumSize = System::Drawing::Size(710, 490);
 			this->Name = L"MyForm";
 			this->Text = L"MyForm";
 			this->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &MyForm::MyForm_Paint);
@@ -458,6 +475,13 @@ private: System::Void MyForm_KeyDown(System::Object^ sender, System::Windows::Fo
 	case Keys::D:
 		mvc.changePosition(1, 0, MyForm::Size.Width, MyForm::Size.Height - panel1->Height);
 		break;
+	case Keys::Q:
+		
+		mvc.changeSizes(1,MyForm::Size.Width, MyForm::Size.Height - panel1->Height);
+		break;
+	case Keys::E:
+		mvc.changeSizes(-1, MyForm::Size.Width, MyForm::Size.Height - panel1->Height);
+		break;
 	}
 	Invalidate();
 }
@@ -467,6 +491,15 @@ private: System::Void button4_Click(System::Object^ sender, System::EventArgs^ e
 	mvc.deleteObjects();
 	mvc.checker->deleteChecker();
 	Invalidate();
+}
+private: System::Void MyForm_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
+
+}
+private: System::Void panel1_SizeChanged(System::Object^ sender, System::EventArgs^ e) {
+	
+}
+private: System::Void MyForm_Resize(System::Object^ sender, System::EventArgs^ e) {
+	button1->Location.X = 9 + panel1->Size.Width / 696;
 }
 };
 }
