@@ -1,0 +1,17 @@
+C:\Users\azamat\source\repos\l7_oop\l7_oop\bin\Debug\net6.0-windows\l7_oop.exe
+C:\Users\azamat\source\repos\l7_oop\l7_oop\bin\Debug\net6.0-windows\l7_oop.deps.json
+C:\Users\azamat\source\repos\l7_oop\l7_oop\bin\Debug\net6.0-windows\l7_oop.runtimeconfig.json
+C:\Users\azamat\source\repos\l7_oop\l7_oop\bin\Debug\net6.0-windows\l7_oop.dll
+C:\Users\azamat\source\repos\l7_oop\l7_oop\bin\Debug\net6.0-windows\l7_oop.pdb
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.csproj.AssemblyReference.cache
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\OOP6.Form1.resources
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.csproj.GenerateResource.cache
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.AssemblyInfoInputs.cache
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.AssemblyInfo.cs
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.csproj.CoreCompileInputs.cache
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.dll
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\refint\l7_oop.dll
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.pdb
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\l7_oop.genruntimeconfig.cache
+C:\Users\azamat\source\repos\l7_oop\l7_oop\obj\Debug\net6.0-windows\ref\l7_oop.dll
